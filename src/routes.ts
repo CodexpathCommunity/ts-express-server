@@ -9,5 +9,9 @@ export default function (app: Express) {
   });
 
   //register user
-  app.post("api/v1/user", validateRequest(createUserSchema), createUserHandler);
+  app.post(
+    "/api/v1/user",
+    validateRequest(createUserSchema),
+    createUserHandler
+  );
 }
