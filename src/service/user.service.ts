@@ -1,5 +1,5 @@
 import { DocumentDefinition } from "mongoose";
-
+import { omit } from "lodash";
 import User, { UserDocument } from "../model/user.model";
 
 export async function createUser(user: DocumentDefinition<UserDocument>) {
@@ -8,4 +8,26 @@ export async function createUser(user: DocumentDefinition<UserDocument>) {
   } catch (error: any) {
     throw new Error(error);
   }
+}
+
+export async function validatePassword({
+  email,
+  password,
+}: {
+  email: UserDocument["email"];
+  password: string;
+}) {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return false;
+  }
+
+  const isValid = await user.comparePassword(password);
+
+  if (!isValid) {
+    return false;
+  }
+
+  return omit(user.toJSON(), "password");
 }
