@@ -5,7 +5,11 @@ import {
   createUserSchema,
   createUserSessionSchema,
 } from "./schema/user.schema";
-import { createUserSessionHandler } from "./controller/session.controller";
+import {
+  createUserSessionHandler,
+  invalidateUserSessionHandler,
+} from "./controller/session.controller";
+import requiresUser from "./middleware/requiresUser";
 
 export default function (app: Express) {
   app.get("/", (req: Request, res: Response) => {
@@ -25,4 +29,7 @@ export default function (app: Express) {
     validateRequest(createUserSessionSchema),
     createUserSessionHandler
   );
+
+  //logout user
+  app.delete("/api/v1/sessions", requiresUser, invalidateUserSessionHandler);
 }
