@@ -1,5 +1,4 @@
 import { Express, Request, Response } from "express";
-import validateRequest from "./middleware/validateRequest";
 import { createUserHandler } from "./controller/user.controller";
 import {
   createUserSchema,
@@ -9,7 +8,7 @@ import {
   createUserSessionHandler,
   invalidateUserSessionHandler,
 } from "./controller/session.controller";
-import requiresUser from "./middleware/requiresUser";
+import { requiresUser, validateRequest } from "./middleware";
 
 export default function (app: Express) {
   app.get("/", (req: Request, res: Response) => {
